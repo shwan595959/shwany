@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shwany - 정렬 알고리즘</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { padding-top: 80px; }
+
+    /* ── 필터 바 ── */
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      padding: 24px 48px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-label {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .filter-btn {
+      background: var(--dark3);
+      color: #ccc;
+      border: 1px solid #444;
+      padding: 7px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover  { border-color: white; color: white; }
+    .filter-btn.active {
+      background: white;
+      color: black;
+      border-color: white;
+      font-weight: bold;
+    }
+
+    .sort-select {
+      margin-left: auto;
+      background: var(--dark3);
+      color: white;
+      border: 1px solid #444;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* ── 그리드 ── */
+    .grid-section {
+      padding: 0 48px 60px;
+    }
+
+    .grid-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .grid-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .grid-count {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    /* 그리드용 카드 재정의 */
+    .video-grid .video-card {
+      flex: none;
+      width: 100%;
+    }
+
+    .no-result {
+      text-align: center;
+      padding: 80px 0;
+      color: #555;
+    }
+
+    .no-result .icon { font-size: 3rem; margin-bottom: 16px; }
+
+    @media (max-width: 768px) {
+      .filter-bar  { padding: 16px 20px; }
+      .grid-section { padding: 0 20px 40px; }
+      .video-grid  { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── 네비게이션 ── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-left">
+      <a class="logo" href="index.html">🎬 Shwany</a>
+      <ul class="nav-menu">
+        <li><a href="index.html">메인</a></li>
+        <li><a href="list.html" class="active">정렬 알고리즘</a></li>
+        <li><a href="search.html">탐색 알고리즘</a></li>
+      </ul>
+    </div>
+    <div class="nav-right">
+      <button class="nav-search-btn" onclick="location.href='search.html'">🔍</button>
+    </div>
+  </nav>
+
+  <!-- ── 필터 바 ── -->
+  <div class="filter-bar">
+    <span class="filter-label">장르</span>
+    <button class="filter-btn active" data-filter="전체">전체</button>
+    <button class="filter-btn" data-filter="액션">💥 특집</button>
+    <button class="filter-btn" data-filter="드라마">🎭 단편</button>
+    <button class="filter-btn" data-filter="코미디">😂 모음집</button>
+    <button class="filter-btn" data-filter="공포">👻 공포</button>
+    <button class="filter-btn" data-filter="SF">🚀 SF</button>
+
+    <select class="sort-select" id="sortSelect">
+      <option value="default">기본 순</option>
+      <option value="year">최신 순</option>
+      <option value="title">제목 순</option>
+      <option value="match">추천 순</option>
+    </select>
+  </div>
+
+  <!-- ── 그리드 ── -->
+  <section class="grid-section">
+    <div class="grid-header">
+      <h2 class="grid-title" id="gridTitle">전체 영상</h2>
+      <span class="grid-count" id="gridCount"></span>
+    </div>
+    <div class="video-grid" id="videoGrid"></div>
+  </section>
+
+  <!-- ── 로딩 ── -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>불러오는 중...</p>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    let allVideos     = []
+    let currentFilter = '전체'
+    let currentSort   = 'default'
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      showLoading(true)
+      setupNavScroll()
+
+      try {
+        allVideos = await fetchCatalog()
+        renderGrid()
+        setupFilters()
+        setupSort()
+      } catch(e) {
+        console.error(e)
+      }
+
+      showLoading(false)
+    })
+
+    // ── 그리드 렌더링 ────────────────────────────────────
+    function renderGrid() {
+      let filtered = currentFilter === '전체'
+        ? [...allVideos]
+        : allVideos.filter(v => v.category === currentFilter)
+
+      // 정렬
+      if (currentSort === 'year')  filtered.sort((a,b) => b.year - a.year)
+      if (currentSort === 'title') filtered.sort((a,b) => a.title.localeCompare(b.title))
+      if (currentSort === 'match') filtered.sort((a,b) => (b.match||0) - (a.match||0))
+
+      const grid = document.getElementById('videoGrid')
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="no-result" style="grid-column:1/-1">
+            <div class="icon">🎬</div>
+            <p>아직 영상이 없어요!</p>
+          </div>`
+      } else {
+        grid.innerHTML = filtered.map(createCard).join('')
+      }
+
+      document.getElementById('gridTitle').textContent =
+        currentFilter === '전체' ? '전체 영상' : currentFilter
+      document.getElementById('gridCount').textContent =
+        `총 ${filtered.length}개`
+    }
+
+    // ── 필터 버튼 ────────────────────────────────────────
+    function setupFilters() {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn')
+            .forEach(b => b.classList.remove('active'))
+          btn.classList.add('active')
+          currentFilter = btn.dataset.filter
+          renderGrid()
+        })
+      })
+    }
+
+    // ── 정렬 ─────────────────────────────────────────────
+    function setupSort() {
+      document.getElementById('sortSelect').addEventListener('change', e => {
+        currentSort = e.target.value
+        renderGrid()
+      })
+    }
+  </script>
+</body>
+</html>
