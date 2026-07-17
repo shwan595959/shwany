@@ -1,0 +1,80 @@
+{
+  "videos": [
+    {
+      "id": 1,
+      "title": "김경찬 특집",
+      "description": "불당중 출신 김경찬! 그의 충곽 일상은 상상치 못할 폐급력을 자랑하고 있습니다. 수업시간에 자는 것 뿐만 아니라 심지어 게임까지 감행한다는 사실! 그의 실체를 파해칩시다.",
+      "category": "특집",
+      "year": 2026,
+      "duration": "01:15",
+      "rating": "15",
+      "thumbnail": "https://pub-29913ae446c242b0b02c7de5814c7638.r2.dev/Thumbnails/김경찬Thumbnail1.png",
+      "videoUrl": "https://pub-29913ae446c242b0b02c7de5814c7638.r2.dev/videos/김경찬특집.mp4",
+      "featured": false
+    },
+    {
+      "id": 2,
+      "title": "홍윤기 특집",
+      "description": "용곡중 출신 홍윤기! 그는 충곽에서 빠르게 적응하여 벌써부터 연애를 하고 있네요! 어, 저기 저격수가 보이네요. 그의 실체를 도굴할 예정인가봐요!",
+      "category": "특집",
+      "year": 2026,
+      "duration": "01:17",
+      "rating": "15",
+      "thumbnail": "https://pub-29913ae446c242b0b02c7de5814c7638.r2.dev/Thumbnails/홍윤기Thumbnail1.png",
+      "videoUrl": "https://pub-29913ae446c242b0b02c7de5814c7638.r2.dev/videos/홍윤기특집.mp4",
+      "featured": false
+    },
+   {
+      "id": 3,
+      "title": "이준우 특집",
+      "description": "환서중 출신 김경찬! 김경찬 특집인 줄 알았으나 이준우 특집이었습니다! 그는 도대체 누구이고 또 그는 무엇일까요?",
+      "category": "특집",
+      "year": 2026,
+      "duration": "01:10",
+      "rating": "15",
+      "thumbnail": "https://pub-29913ae446c242b0b02c7de5814c7638.r2.dev/Thumbnails/이준우Thumbnail1.png",
+      "videoUrl": "https://pub-29913ae446c242b0b02c7de5814c7638.r2.dev/videos/이준우특집.mp4",
+      "featured": false
+    },
+    {
+      "id": 4,
+      "title": "오승훈 특집",
+      "description": "설화중 출신 오승훈! 그의 대두력과 다크서클은 가히 팬더를 연상시킵니다. 그가 충곽안에서 이렇게 된 이유는 무엇이며, 그의 과거를 타임머신을 통해 파해칩시다.",
+      "category": "특집",
+      "year": 2026,
+      "duration": "01:36",
+      "rating": "15",
+      "thumbnail": "https://pub-29913ae446c242b0b02c7de5814c7638.r2.dev/Thumbnails/오승훈Thumbnail1.png",
+      "videoUrl": "https://pub-29913ae446c242b0b02c7de5814c7638.r2.dev/videos/오승훈특집.mp4",
+      "featured": false
+    },
+   {
+      "id": 5,
+      "title": "양재원 특집",
+      "description": "불당중 전학생 양재원! 그의 축구 실력은 타의 추종을 불허하나 배구 내기에서 결국 무너졌습니다.. 그의 어두운 피부와 얼굴의 매력을 함께 알아가 봅시다.",
+      "category": "특집",
+      "year": 2026,
+      "duration": "00:42",
+      "rating": "15",
+      "thumbnail": "https://pub-29913ae446c242b0b02c7de5814c7638.r2.dev/Thumbnails/양재원Thumbnail1.png",
+      "videoUrl": "https://pub-29913ae446c242b0b02c7de5814c7638.r2.dev/videos/양재원특집.mp4",
+      "featured": false
+    }
+  ],
+    "upcoming": [
+    {
+      "id": 101,
+      "title": "고선호 특집",
+      "thumbnail": "https://pub-29913ae446c242b0b02c7de5814c7638.r2.dev/Thumbnails/고선호Thumbnail1.png",
+      "releaseDate": "2026년 하반기",
+      "description": "저 멀리서 돼지 멱따는 소리가 들려옵니다! 아, 돼지가 아니라 고선호라구요?"
+    },
+    {
+      "id": 102,
+      "title": "송규원 특집",
+      "thumbnail": "https://pub-29913ae446c242b0b02c7de5814c7638.r2.dev/Thumbnails/송규원Thumbnail1.png",
+      "releaseDate": "2026년 하반기",
+      "description": "펑! 누가 축구공을 찹니다. 경기가 아직 안끝났다구요? 그럼 나중에 오세요."
+    }
+  ]
+}

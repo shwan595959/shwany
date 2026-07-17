@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shwany - 탐색 알고리즘</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { padding-top: 80px; }
+
+    /* ── 검색 헤더 ── */
+    .search-header {
+      padding: 40px 48px 24px;
+    }
+
+    .search-header h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    .search-input-wrap {
+      position: relative;
+      max-width: 600px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: #aaa;
+    }
+
+    #searchInput {
+      width: 100%;
+      background: var(--dark3);
+      border: 2px solid #444;
+      color: white;
+      padding: 14px 16px 14px 48px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    #searchInput:focus { border-color: white; }
+
+    .search-clear {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: none;
+    }
+
+    /* ── 인기 검색어 ── */
+    .popular-section {
+      padding: 0 48px 32px;
+    }
+
+    .popular-title {
+      font-size: 1rem;
+      color: #aaa;
+      margin-bottom: 14px;
+    }
+
+    .popular-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .popular-tag {
+      background: var(--dark3);
+      border: 1px solid #444;
+      color: #ccc;
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .popular-tag:hover {
+      background: var(--red);
+      border-color: var(--red);
+      color: white;
+    }
+
+    /* ── 검색 결과 ── */
+    .result-section {
+      padding: 0 48px 60px;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .result-title {
+      font-size: 1.2rem;
+      color: #aaa;
+    }
+
+    .result-title span { color: white; font-weight: bold; }
+
+    .result-count {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .result-grid .video-card { flex: none; width: 100%; }
+
+    /* ── 빈 상태 ── */
+    .empty-state {
+      text-align: center;
+      padding: 80px 0;
+      color: #555;
+    }
+
+    .empty-state .icon { font-size: 4rem; margin-bottom: 16px; }
+    .empty-state h3    { font-size: 1.3rem; color: #777; margin-bottom: 8px; }
+    .empty-state p     { font-size: 0.9rem; }
+
+    /* ── 카테고리 미리보기 (검색 전) ── */
+    .category-preview {
+      padding: 0 48px 60px;
+    }
+
+    .category-preview h3 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .category-card {
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      aspect-ratio: 16/9;
+      transition: transform 0.2s;
+    }
+
+    .category-card:hover { transform: scale(1.04); }
+
+    .category-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .category-card-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.5);
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .search-header   { padding: 24px 20px 16px; }
+      .popular-section { padding: 0 20px 24px; }
+      .result-section  { padding: 0 20px 40px; }
+      .category-preview { padding: 0 20px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── 네비게이션 ── -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-left">
+      <a class="logo" href="index.html">🎬 Shwany</a>
+      <ul class="nav-menu">
+        <li><a href="index.html">메인</a></li>
+        <li><a href="list.html">정렬 알고리즘</a></li>
+        <li><a href="search.html" class="active">탐색 알고리즘</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── 검색 헤더 ── -->
+  <div class="search-header">
+    <h2>탐색</h2>
+    <div class="search-input-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput"
+             placeholder="제목, 장르로 검색해라"
+             autofocus>
+      <button class="search-clear" id="clearBtn">✕</button>
+    </div>
+  </div>
+
+  <!-- ── 인기 검색어 (검색 전) ── -->
+  <div class="popular-section" id="popularSection">
+    <p class="popular-title">인기 탐색</p>
+    <div class="popular-tags" id="popularTags"></div>
+  </div>
+
+  <!-- ── 카테고리 미리보기 (검색 전) ── -->
+  <div class="category-preview" id="categoryPreview">
+    <h3>장르 탐색</h3>
+    <div class="category-grid" id="categoryGrid"></div>
+  </div>
+
+  <!-- ── 검색 결과 (검색 후) ── -->
+  <div class="result-section" id="resultSection" style="display:none">
+    <div class="result-header">
+      <p class="result-title">
+        "<span id="resultKeyword"></span>" 검색 결과
+      </p>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+    <div class="result-grid" id="resultGrid"></div>
+  </div>
+
+  <!-- ── 로딩 ── -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    let allVideos = []
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      showLoading(true)
+
+      try {
+        allVideos = await fetchCatalog()
+        buildPopularTags()
+        buildCategoryGrid()
+      } catch(e) {
+        console.error(e)
+      }
+
+      showLoading(false)
+      setupSearch()
+    })
+
+    // ── 인기 검색어 ──────────────────────────────────────
+    function buildPopularTags() {
+      // 카테고리 + 제목 일부를 인기 검색어로 활용
+      const categories = [...new Set(allVideos.map(v => v.category))]
+      const tags = [
+        ...categories,
+        ...allVideos.slice(0, 3).map(v => v.title)
+      ]
+
+      document.getElementById('popularTags').innerHTML = tags.map(tag => `
+        <span class="popular-tag" onclick="quickSearch('${tag}')">
+          ${tag}
+        </span>
+      `).join('')
+    }
+
+    // ── 카테고리 그리드 ──────────────────────────────────
+    function buildCategoryGrid() {
+      const categories = [...new Set(allVideos.map(v => v.category))]
+      const icons = { '특집':'💥', '드라마':'🎭', '코미디':'😂', '공포':'👻', 'SF':'🚀' }
+
+      document.getElementById('categoryGrid').innerHTML = categories.map(cat => {
+        const sample = allVideos.find(v => v.category === cat)
+        return `
+          <div class="category-card" onclick="quickSearch('${cat}')">
+            <img src="${sample?.thumbnail || ''}" alt="${cat}">
+            <div class="category-card-label">
+              ${icons[cat] || '🎬'} ${cat}
+            </div>
+          </div>
+        `
+      }).join('')
+    }
+
+    // ── 검색 설정 ────────────────────────────────────────
+    function setupSearch() {
+      const input   = document.getElementById('searchInput')
+      const clearBtn = document.getElementById('clearBtn')
+
+      input.addEventListener('input', () => {
+        const q = input.value.trim()
+        clearBtn.style.display = q ? 'block' : 'none'
+
+        if (q.length === 0) {
+          showDefault()
+        } else {
+          doSearch(q)
+        }
+      })
+
+      clearBtn.addEventListener('click', () => {
+        input.value = ''
+        clearBtn.style.display = 'none'
+        input.focus()
+        showDefault()
+      })
+    }
+
+    // ── 빠른 검색 (태그 클릭) ────────────────────────────
+    function quickSearch(keyword) {
+      const input = document.getElementById('searchInput')
+      input.value = keyword
+      document.getElementById('clearBtn').style.display = 'block'
+      doSearch(keyword)
+    }
+
+    // ── 검색 실행 ────────────────────────────────────────
+    function doSearch(query) {
+      const q        = query.toLowerCase()
+      const filtered = allVideos.filter(v =>
+        v.title.toLowerCase().includes(q)       ||
+        v.category.toLowerCase().includes(q)    ||
+        v.description.toLowerCase().includes(q)
+      )
+
+      // 검색 전 UI 숨기기
+      document.getElementById('popularSection').style.display  = 'none'
+      document.getElementById('categoryPreview').style.display = 'none'
+      document.getElementById('resultSection').style.display   = 'block'
+
+      document.getElementById('resultKeyword').textContent = query
+      document.getElementById('resultCount').textContent   = `${filtered.length}개`
+
+      const grid = document.getElementById('resultGrid')
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column:1/-1">
+            <div class="icon">🔍</div>
+            <h3>"${query}"에 대한 결과가 없어요!</h3>
+            <p>다른 언어를 구사하고 있으신건 아닌가요?</p>
+          </div>`
+      } else {
+        grid.innerHTML = filtered.map(createCard).join('')
+      }
+    }
+
+    // ── 기본 화면으로 ────────────────────────────────────
+    function showDefault() {
+      document.getElementById('popularSection').style.display  = 'block'
+      document.getElementById('categoryPreview').style.display = 'block'
+      document.getElementById('resultSection').style.display   = 'none'
+    }
+  </script>
+</body>
+</html>

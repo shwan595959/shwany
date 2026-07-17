@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shwany - 스와니 | 최고의 영상 플렛폼</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── 히어로 배너 ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+
+    .hero-slide.active { opacity: 1; }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(20,20,20,0.9) 35%, transparent 70%),
+        linear-gradient(to top,   rgba(20,20,20,1)   0%,  transparent 50%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 20%;
+      left: 48px;
+      z-index: 2;
+      max-width: 550px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(229,9,20,0.9);
+      padding: 4px 14px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 900;
+      line-height: 1.05;
+      margin-bottom: 16px;
+      text-shadow: 2px 2px 12px rgba(0,0,0,0.8);
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: #ddd;
+      line-height: 1.7;
+      margin-bottom: 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 22px;
+      font-size: 0.85rem;
+      color: #bbb;
+    }
+
+    .hero-meta .match  { color: #46d369; font-weight: bold; font-size: 1rem; }
+    .hero-meta .rbadge {
+      border: 1px solid #bbb;
+      padding: 1px 7px;
+      border-radius: 3px;
+      font-size: 0.78rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-play, .btn-more {
+      padding: 13px 30px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-play {
+      background: white;
+      color: black;
+    }
+
+    .btn-more {
+      background: rgba(109,109,110,0.7);
+      color: white;
+    }
+
+    .btn-play:hover, .btn-more:hover {
+      opacity: 0.85;
+      transform: scale(1.03);
+    }
+
+    /* 슬라이드 인디케이터 */
+    .hero-indicators {
+      position: absolute;
+      bottom: 12%;
+      right: 48px;
+      z-index: 2;
+      display: flex;
+      gap: 8px;
+    }
+
+    .indicator {
+      width: 30px;
+      height: 3px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.3s, width 0.3s;
+    }
+
+    .indicator.active {
+      background: white;
+      width: 50px;
+    }
+
+    /* 하이라이트 프리뷰 (하단 미리보기) */
+    .hero-preview {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 2;
+      display: flex;
+      gap: 8px;
+      padding: 0 48px 40px;
+    }
+
+    .preview-thumb {
+      width: 120px;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border 0.2s, transform 0.2s;
+      opacity: 0.6;
+      transition: all 0.3s;
+    }
+
+    .preview-thumb.active {
+      border-color: white;
+      opacity: 1;
+      transform: scale(1.05);
+    }
+
+    .preview-thumb img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* 콘텐츠 영역 */
+    .content {
+      position: relative;
+      z-index: 10;
+      margin-top: -80px;
+      padding-bottom: 60px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── 네비게이션 ── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-left">
+      <a class="logo" href="index.html">🎬 Shwany</a>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="active">메인</a></li>
+        <li><a href="list.html">정렬 알고리즘</a></li>
+        <li><a href="search.html">탐색 알고리즘</a></li>
+      </ul>
+    </div>
+    <div class="nav-right">
+      <button class="nav-search-btn" onclick="location.href='search.html'">🔍</button>
+    </div>
+  </nav>
+
+  <!-- ── 히어로 배너 ── -->
+  <section class="hero" id="hero">
+    <div id="heroSlides"></div>
+    <div class="hero-gradient"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">추천: 그들은 누구인가</div>
+      <h2 class="hero-title"  id="heroTitle">Loading...</h2>
+      <p  class="hero-desc"   id="heroDesc"></p>
+      <div class="hero-meta"  id="heroMeta"></div>
+      <div class="hero-buttons">
+        <button class="btn-play" id="heroPlay">▶ 재생</button>
+        <button class="btn-more" id="heroMore">ℹ️ 자세히 보기</button>
+      </div>
+    </div>
+
+    <!-- 슬라이드 인디케이터 -->
+    <div class="hero-indicators" id="heroIndicators"></div>
+
+    <!-- 하단 썸네일 미리보기 -->
+    <div class="hero-preview" id="heroPreview"></div>
+  </section>
+
+  <!-- 기존 영상 행들 아래에 추가 -->
+  <section class="video-row">
+    <h3 class="row-title">🔒 Coming Soon</h3>
+    <div class="video-list" id="upcomingList"></div>
+  </section>
+
+
+  <!-- ── 영상 목록 ── -->
+  <main class="content">
+    <section class="video-row">
+      <h3 class="row-title">🔥 추천</h3>
+      <div class="video-list" id="featuredList"></div>
+    </section>
+
+    <section class="video-row">
+      <h3 class="row-title">🎬 전체</h3>
+      <div class="video-list" id="allList"></div>
+    </section>
+
+    <section class="video-row" id="actionRow">
+      <h3 class="row-title">💥 특집</h3>
+      <div class="video-list" id="actionList"></div>
+    </section>
+
+    <section class="video-row" id="dramaRow">
+      <h3 class="row-title">🎭 단편</h3>
+      <div class="video-list" id="dramaList"></div>
+    </section>
+
+    <section class="video-row" id="comedyRow">
+      <h3 class="row-title">😂 모음집</h3>
+      <div class="video-list" id="comedyList"></div>
+    </section>
+  </main>
+
+  <!-- ── 로딩 ── -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>불러오는 중...</p>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    let videos       = []
+    let currentSlide = 0
+    let slideTimer   = null
+    let featuredList = []
+
+    // ── 초기화 ──────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', async () => {
+      showLoading(true)
+      setupNavScroll()
+
+      try {
+        const data = await loadAll()
+videos       = data.videos
+renderUpcoming(data.upcoming)
+        featuredList = videos.filter(v => v.featured)
+        if (featuredList.length === 0) featuredList = videos.slice(0, 5)
+
+        buildSlides()
+        buildPreview()
+        buildIndicators()
+        showSlide(0)
+        startAutoSlide()
+        renderRows()
+
+      } catch(e) {
+        console.error(e)
+        showError()
+      }
+
+      showLoading(false)
+    })
+
+    // ── 슬라이드 생성 ────────────────────────────────────
+    function buildSlides() {
+      const container = document.getElementById('heroSlides')
+      container.innerHTML = featuredList.map((v, i) => `
+        <div class="hero-slide" id="slide${i}"
+          style="background-image: url('${v.thumbnail}')">
+        </div>
+      `).join('')
+    }
+
+// ── 예고 영상 렌더링 ─────────────────────────────────
+function renderUpcoming(upcomingList) {
+  const container = document.getElementById('upcomingList')
+  if (!upcomingList || upcomingList.length === 0) return
+
+  container.innerHTML = upcomingList.map(v => {
+
+    const release  = v.releaseDate
+
+    return `
+      <div class="upcoming-card">
+        <img src="${v.thumbnail}" alt="${v.title}">
+        <div class="upcoming-overlay">
+          <div class="upcoming-lock">🔒</div>
+          <div class="upcoming-date">${release} 공개</div>
+          <div class="upcoming-title">${v.title}</div>
+        </div>
+      </div>
+    `
+  }).join('')
+}
+
+// ── fetchCatalog 수정 (upcoming도 같이 받기) ─────────
+// 기존 fetchCatalog 대신 아래처럼 호출
+async function loadAll() {
+  const res  = await fetch(CONFIG.CATALOG_URL)
+  const data = await res.json()
+  return {
+    videos   : data.videos,
+    upcoming : data.upcoming || []
+  }
+}
+
+
+    // ── 하단 썸네일 미리보기 ─────────────────────────────
+    function buildPreview() {
+      const container = document.getElementById('heroPreview')
+      container.innerHTML = featuredList.map((v, i) => `
+        <div class="preview-thumb ${i===0?'active':''}"
+             id="prev${i}"
+             onclick="showSlide(${i})">
+          <img src="${v.thumbnail}" alt="${v.title}">
+        </div>
+      `).join('')
+    }
+
+    // ── 인디케이터 생성 ──────────────────────────────────
+    function buildIndicators() {
+      const container = document.getElementById('heroIndicators')
+      container.innerHTML = featuredList.map((_, i) => `
+        <div class="indicator ${i===0?'active':''}"
+             id="ind${i}"
+             onclick="showSlide(${i})">
+        </div>
+      `).join('')
+    }
+
+    // ── 슬라이드 전환 ────────────────────────────────────
+    function showSlide(idx) {
+      // 이전 슬라이드 비활성화
+      document.querySelectorAll('.hero-slide').forEach((s, i) => {
+        s.classList.toggle('active', i === idx)
+      })
+      document.querySelectorAll('.preview-thumb').forEach((p, i) => {
+        p.classList.toggle('active', i === idx)
+      })
+      document.querySelectorAll('.indicator').forEach((d, i) => {
+        d.classList.toggle('active', i === idx)
+      })
+
+      // 히어로 콘텐츠 업데이트
+      const v = featuredList[idx]
+      document.getElementById('heroTitle').textContent = v.title
+      document.getElementById('heroDesc').textContent  = v.description
+      document.getElementById('heroMeta').innerHTML    = `
+        <span class="match">✔ ${v.match || 97}% 일치</span>
+        <span>${v.year}</span>
+        <span>${v.duration}</span>
+        <span class="rbadge">${v.rating}</span>
+      `
+      document.getElementById('heroPlay').onclick = () => goPlayer(v.id)
+      document.getElementById('heroMore').onclick = () => goPlayer(v.id)
+
+      currentSlide = idx
+    }
+
+    // ── 자동 슬라이드 ────────────────────────────────────
+    function startAutoSlide() {
+      slideTimer = setInterval(() => {
+        const next = (currentSlide + 1) % featuredList.length
+        showSlide(next)
+      }, 5000)
+    }
+
+    // ── 영상 행 렌더링 ───────────────────────────────────
+    function renderRows() {
+      const featured = videos.filter(v => v.featured)
+      const action   = videos.filter(v => v.category === '액션')
+      const drama    = videos.filter(v => v.category === '드라마')
+      const comedy   = videos.filter(v => v.category === '코미디')
+
+      document.getElementById('featuredList').innerHTML = featured.map(createCard).join('')
+      document.getElementById('allList').innerHTML      = videos.map(createCard).join('')
+
+      if (action.length) {
+        document.getElementById('actionList').innerHTML = action.map(createCard).join('')
+      } else {
+        document.getElementById('actionRow').style.display = 'none'
+      }
+
+      if (drama.length) {
+        document.getElementById('dramaList').innerHTML = drama.map(createCard).join('')
+      } else {
+        document.getElementById('dramaRow').style.display = 'none'
+      }
+
+      if (comedy.length) {
+        document.getElementById('comedyList').innerHTML = comedy.map(createCard).join('')
+      } else {
+        document.getElementById('comedyRow').style.display = 'none'
+      }
+    }
+
+    function showError() {
+      document.body.innerHTML = `
+        <div style="display:flex;flex-direction:column;justify-content:center;
+                    align-items:center;height:100vh;background:#141414;
+                    color:white;gap:16px;">
+          <div style="font-size:3rem">⚠️</div>
+          <h2>문제가 있다</h2>
+          <p style="color:#aaa">Error: Check R2 Bukkit or CORS</p>
+          <button onclick="location.reload()"
+            style="background:#e50914;color:white;border:none;
+                   padding:10px 24px;border-radius:4px;cursor:pointer;">
+            REFRESH
+          </button>
+        </div>`
+    }
+  </script>
+</body>
+</html>
