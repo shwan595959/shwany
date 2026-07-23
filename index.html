@@ -6,188 +6,222 @@
   <title>Shwany - 스와니 | 최고의 영상 플렛폼</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* ── 히어로 배너 ── */
-    .hero {
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-    }
 
-    .hero-slide {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      opacity: 0;
-      transition: opacity 1.2s ease;
-    }
+  /* ── 히어로 배너 ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-    .hero-slide.active { opacity: 1; }
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    transform: scale(1.05);
+  }
 
-    .hero-gradient {
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(to right, rgba(20,20,20,0.9) 35%, transparent 70%),
-        linear-gradient(to top,   rgba(20,20,20,1)   0%,  transparent 50%);
-      z-index: 1;
-    }
+  .hero-slide.active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 1.5s ease, transform 8s ease;
+  }
 
-    .hero-content {
-      position: absolute;
-      bottom: 20%;
-      left: 48px;
-      z-index: 2;
-      max-width: 550px;
-    }
+  .hero-gradient {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba(10,10,10,0.95) 30%, rgba(10,10,10,0.3) 70%, transparent),
+      linear-gradient(to top, rgba(10,10,10,1) 0%, transparent 55%),
+      linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, transparent 20%);
+    z-index: 1;
+  }
 
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(229,9,20,0.9);
-      padding: 4px 14px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      margin-bottom: 14px;
-    }
+  .hero-content {
+    position: absolute;
+    bottom: 22%;
+    left: 56px;
+    z-index: 2;
+    max-width: 560px;
+  }
 
-    .hero-title {
-      font-size: 3.5rem;
-      font-weight: 900;
-      line-height: 1.05;
-      margin-bottom: 16px;
-      text-shadow: 2px 2px 12px rgba(0,0,0,0.8);
-    }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #e50914, #ff4757);
+    padding: 5px 16px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(229,9,20,0.4);
+  }
 
-    .hero-desc {
-      font-size: 1rem;
-      color: #ddd;
-      line-height: 1.7;
-      margin-bottom: 14px;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
+  .hero-title {
+    font-size: 3.8rem;
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 18px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    letter-spacing: -1px;
+  }
 
-    .hero-meta {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      margin-bottom: 22px;
-      font-size: 0.85rem;
-      color: #bbb;
-    }
+  .hero-desc {
+    font-size: 1rem;
+    color: #ccc;
+    line-height: 1.8;
+    margin-bottom: 18px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 
-    .hero-meta .match  { color: #46d369; font-weight: bold; font-size: 1rem; }
-    .hero-meta .rbadge {
-      border: 1px solid #bbb;
-      padding: 1px 7px;
-      border-radius: 3px;
-      font-size: 0.78rem;
-    }
+  .hero-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 28px;
+    font-size: 0.85rem;
+    color: #bbb;
+  }
 
-    .hero-buttons {
-      display: flex;
-      gap: 12px;
-    }
+  .hero-meta .match {
+    color: #46d369;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
 
-    .btn-play, .btn-more {
-      padding: 13px 30px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+  .hero-meta .rbadge {
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    backdrop-filter: blur(4px);
+  }
 
-    .btn-play {
-      background: white;
-      color: black;
-    }
+  .hero-buttons {
+    display: flex;
+    gap: 14px;
+  }
 
-    .btn-more {
-      background: rgba(109,109,110,0.7);
-      color: white;
-    }
+  .btn-play, .btn-more {
+    padding: 14px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.3px;
+  }
 
-    .btn-play:hover, .btn-more:hover {
-      opacity: 0.85;
-      transform: scale(1.03);
-    }
+  .btn-play {
+    background: white;
+    color: black;
+    box-shadow: 0 4px 20px rgba(255,255,255,0.2);
+  }
 
-    /* 슬라이드 인디케이터 */
-    .hero-indicators {
-      position: absolute;
-      bottom: 12%;
-      right: 48px;
-      z-index: 2;
-      display: flex;
-      gap: 8px;
-    }
+  .btn-play:hover {
+    background: rgba(255,255,255,0.85);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255,255,255,0.3);
+  }
 
-    .indicator {
-      width: 30px;
-      height: 3px;
-      background: rgba(255,255,255,0.4);
-      border-radius: 2px;
-      cursor: pointer;
-      transition: background 0.3s, width 0.3s;
-    }
+  .btn-more {
+    background: rgba(255,255,255,0.12);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+  }
 
-    .indicator.active {
-      background: white;
-      width: 50px;
-    }
+  .btn-more:hover {
+    background: rgba(255,255,255,0.22);
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.4);
+  }
 
-    /* 하이라이트 프리뷰 (하단 미리보기) */
-    .hero-preview {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      z-index: 2;
-      display: flex;
-      gap: 8px;
-      padding: 0 48px 40px;
-    }
+  /* 슬라이드 인디케이터 */
+  .hero-indicators {
+    position: absolute;
+    bottom: 13%;
+    right: 56px;
+    z-index: 2;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
 
-    .preview-thumb {
-      width: 120px;
-      border-radius: 6px;
-      overflow: hidden;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: border 0.2s, transform 0.2s;
-      opacity: 0.6;
-      transition: all 0.3s;
-    }
+  .indicator {
+    width: 24px;
+    height: 3px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+  }
 
-    .preview-thumb.active {
-      border-color: white;
-      opacity: 1;
-      transform: scale(1.05);
-    }
+  .indicator.active {
+    background: white;
+    width: 44px;
+    box-shadow: 0 0 8px rgba(255,255,255,0.5);
+  }
 
-    .preview-thumb img {
-      width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      display: block;
-    }
+  /* 하단 썸네일 미리보기 */
+  .hero-preview {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+    display: flex;
+    gap: 10px;
+    padding: 0 56px 44px;
+  }
 
-    /* 콘텐츠 영역 */
-    .content {
-      position: relative;
-      z-index: 10;
-      margin-top: -80px;
-      padding-bottom: 60px;
-    }
+  .preview-thumb {
+    width: 110px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    opacity: 0.5;
+    transition: all 0.35s ease;
+  }
+
+  .preview-thumb:hover {
+    opacity: 0.8;
+    transform: translateY(-3px);
+  }
+
+  .preview-thumb.active {
+    border-color: white;
+    opacity: 1;
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  }
+
+  .preview-thumb img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* 콘텐츠 영역 */
+  .content {
+    position: relative;
+    z-index: 10;
+    margin-top: -80px;
+    padding-bottom: 80px;
+  }
   </style>
 </head>
 <body>
@@ -274,12 +308,21 @@
   <script src="config.js"></script>
   <script src="app.js"></script>
   <script>
+
+    // ── app.js 로드 실패 대비 폴백 ──
+window.addEventListener('load', () => {
+  if (typeof goPlayer === 'undefined') {
+    console.error('❌ app.js 로드 실패! goPlayer 없음')
+  } else {
+    console.log('✅ app.js 정상 로드됨')
+  }
+})
     let videos       = []
     let currentSlide = 0
     let slideTimer   = null
     let featuredList = []
-
-    // ── 초기화 ──────────────────────────────────────────
+    
+    // Refresh
     document.addEventListener('DOMContentLoaded', async () => {
       showLoading(true)
       setupNavScroll()
@@ -306,7 +349,7 @@ renderUpcoming(data.upcoming)
       showLoading(false)
     })
 
-    // ── 슬라이드 생성 ────────────────────────────────────
+    // Slide Generator
     function buildSlides() {
       const container = document.getElementById('heroSlides')
       container.innerHTML = featuredList.map((v, i) => `
@@ -316,7 +359,7 @@ renderUpcoming(data.upcoming)
       `).join('')
     }
 
-// ── 예고 영상 렌더링 ─────────────────────────────────
+// Preview
 function renderUpcoming(upcomingList) {
   const container = document.getElementById('upcomingList')
   if (!upcomingList || upcomingList.length === 0) return
@@ -338,19 +381,18 @@ function renderUpcoming(upcomingList) {
   }).join('')
 }
 
-// ── fetchCatalog 수정 (upcoming도 같이 받기) ─────────
-// 기존 fetchCatalog 대신 아래처럼 호출
 async function loadAll() {
-  const res  = await fetch(CONFIG.CATALOG_URL)
+  // ✅ 캐시 무력화
+  const res  = await fetch(CONFIG.CATALOG_URL + '?t=' + Date.now())
   const data = await res.json()
+  _cachedVideos = data.videos  // 직접 할당!
+  
   return {
     videos   : data.videos,
     upcoming : data.upcoming || []
   }
 }
 
-
-    // ── 하단 썸네일 미리보기 ─────────────────────────────
     function buildPreview() {
       const container = document.getElementById('heroPreview')
       container.innerHTML = featuredList.map((v, i) => `
@@ -362,7 +404,7 @@ async function loadAll() {
       `).join('')
     }
 
-    // ── 인디케이터 생성 ──────────────────────────────────
+
     function buildIndicators() {
       const container = document.getElementById('heroIndicators')
       container.innerHTML = featuredList.map((_, i) => `
@@ -373,9 +415,8 @@ async function loadAll() {
       `).join('')
     }
 
-    // ── 슬라이드 전환 ────────────────────────────────────
     function showSlide(idx) {
-      // 이전 슬라이드 비활성화
+
       document.querySelectorAll('.hero-slide').forEach((s, i) => {
         s.classList.toggle('active', i === idx)
       })
@@ -391,10 +432,12 @@ async function loadAll() {
       document.getElementById('heroTitle').textContent = v.title
       document.getElementById('heroDesc').textContent  = v.description
       document.getElementById('heroMeta').innerHTML    = `
-        <span class="match">✔ ${v.match || 97}% 일치</span>
+        <span class="match">✔ 오리지널(Original)</span>
         <span>${v.year}</span>
         <span>${v.duration}</span>
         <span class="rbadge">${v.rating}</span>
+        <span class="dot"></span>
+        <span class="evaluation">★ ${v.evaluation}</span>
       `
       document.getElementById('heroPlay').onclick = () => goPlayer(v.id)
       document.getElementById('heroMore').onclick = () => goPlayer(v.id)
@@ -402,7 +445,6 @@ async function loadAll() {
       currentSlide = idx
     }
 
-    // ── 자동 슬라이드 ────────────────────────────────────
     function startAutoSlide() {
       slideTimer = setInterval(() => {
         const next = (currentSlide + 1) % featuredList.length
@@ -410,7 +452,6 @@ async function loadAll() {
       }, 5000)
     }
 
-    // ── 영상 행 렌더링 ───────────────────────────────────
     function renderRows() {
       const featured = videos.filter(v => v.featured)
       const action   = videos.filter(v => v.category === '액션')
