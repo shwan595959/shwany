@@ -6,23 +6,162 @@
   <title>Shwany - 스와니 (최고의 영상 플렛폼)</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    body { background: #000; padding-top: 60px; }
+    body {
+      background: #000;
+      padding-top: 60px;
+    }
 
-    /* ── 플레이어 ── */
-    .player-wrap {
+    /* ════════════════════════════
+       히어로 헤더 (썸네일 + 정보)
+    ════════════════════════════ */
+    .player-hero {
+      position: relative;
       width: 100%;
-      max-width: 1100px;
+      height: 580px;
+      overflow: hidden;
+    }
+
+    .player-hero-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center top;
+      filter: blur(2px) brightness(0.35);
+      transform: scale(1.05);
+    }
+
+    .player-hero-gradient {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(0,0,0,0.85) 40%, transparent 80%),
+        linear-gradient(to top, #000 0%, transparent 50%);
+    }
+
+    .player-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 60px 32px 0;
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    /* 썸네일 */
+    .player-thumb {
+      flex: 0 0 400px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.08),
+        0 20px 50px rgba(0,0,0,0.8);
+    }
+
+    .player-thumb img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* 텍스트 정보 */
+    .player-hero-info {
+      flex: 1;
+      padding-top: 8px;
+    }
+
+    .player-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #e50914, #ff4757);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 14px rgba(229,9,20,0.35);
+    }
+
+    .player-hero-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    .player-hero-meta {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+      font-size: 0.85rem;
+      color: #999;
+      flex-wrap: wrap;
+    }
+
+    .player-hero-meta .match {
+      color: #46d369;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .player-hero-meta .badge {
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+
+    .player-hero-meta .cat {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: #ccc;
+    }
+
+    .player-hero-meta .dot {
+      width: 3px; height: 3px;
+      background: #555;
+      border-radius: 50%;
+    }
+
+    .player-hero-desc {
+      color: #bbb;
+      line-height: 1.85;
+      font-size: 0.93rem;
+      max-width: 600px;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ════════════════════════════
+       플레이어 영역
+    ════════════════════════════ */
+    .player-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 32px 0;
     }
 
     .video-container {
       width: 100%;
       aspect-ratio: 16/9;
       background: #000;
-      border-radius: 8px;
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 30px 80px rgba(0,0,0,0.9);
     }
 
     .video-container video {
@@ -31,94 +170,217 @@
       object-fit: contain;
     }
 
-    /* ── 영상 정보 ── */
-    .video-info {
-      padding: 28px 0;
-    }
+    /* ── 플레이어 하단 정보 ── */
+.video-info {
+  padding: 28px 0 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  margin-bottom: 8px;
+}
 
-    .video-info h1 {
-      font-size: 2rem;
-      font-weight: 900;
-      margin-bottom: 12px;
-    }
+.video-info h1 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
 
-    .video-meta {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      margin-bottom: 16px;
-      font-size: 0.9rem;
-      color: #aaa;
-      flex-wrap: wrap;
-    }
+.video-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+  font-size: 0.88rem;
+  color: #999;
+  flex-wrap: wrap;
+}
 
-    .video-meta .match  { color: #46d369; font-weight: bold; }
-    .video-meta .badge  {
-      border: 1px solid #aaa;
-      padding: 1px 7px;
-      border-radius: 3px;
-      font-size: 0.8rem;
-    }
-    .video-meta .cat {
-      background: var(--dark3);
-      padding: 3px 10px;
-      border-radius: 12px;
-      font-size: 0.8rem;
-      color: #ccc;
-    }
+.video-meta .match {
+  color: #46d369;
+  font-weight: 700;
+}
 
-    .video-desc {
-      color: #ccc;
-      line-height: 1.8;
-      font-size: 0.95rem;
-      max-width: 800px;
-      margin-bottom: 24px;
-    }
+.video-meta .badge {
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
 
-    .back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--dark3);
-      color: white;
-      border: 1px solid #444;
-      padding: 10px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.2s;
-      text-decoration: none;
-    }
+.video-meta .cat {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  color: #ccc;
+}
 
-    .back-btn:hover {
-      background: #333;
-      border-color: white;
-    }
+.video-meta .dot {
+  width: 3px; height: 3px;
+  background: #555;
+  border-radius: 50%;
+}
 
-    /* ── 관련 영상 ── */
-    .related-section {
-      padding: 0 24px 60px;
-      max-width: 1100px;
+.video-desc {
+  color: #aaa;
+  line-height: 1.85;
+  font-size: 0.93rem;
+  max-width: 800px;
+  margin-bottom: 24px;
+}
+
+    
+    /* ════════════════════════════
+       크레딧 영역
+    ════════════════════════════ */
+    .credits-section {
+      max-width: 1200px;
       margin: 0 auto;
+      padding: 40px 32px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
     }
 
-    .related-section h3 {
-      font-size: 1.2rem;
-      margin-bottom: 16px;
-      color: #e5e5e5;
+    .credits-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .credits-header h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #e0e0e0;
+      letter-spacing: 0.2px;
+    }
+
+    .credits-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(255,255,255,0.08), transparent);
+    }
+
+    .credits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .credit-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .credit-role {
+      font-size: 0.72rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .credit-name {
+      font-size: 0.92rem;
+      color: #ddd;
+      font-weight: 500;
+    }
+
+    /* 크레딧 비어있을 때 */
+    .credits-empty {
+      color: #444;
+      font-size: 0.88rem;
+      padding: 8px 0;
+    }
+
+    /* ════════════════════════════
+       관련 영상
+    ════════════════════════════ */
+    .related-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 32px 80px;
+    }
+
+    .related-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .related-header h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #e0e0e0;
+      letter-spacing: 0.2px;
+    }
+
+    .related-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(255,255,255,0.08), transparent);
     }
 
     .related-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 10px;
+      gap: 12px;
     }
 
-    .related-grid .video-card { flex: none; width: 100%; }
+    .related-grid .video-card {
+      flex: none;
+      width: 100%;
+    }
 
+    .empty-related {
+      color: #444;
+      font-size: 0.9rem;
+      padding: 24px 0;
+    }
+
+    /* ════════════════════════════
+       뒤로가기 버튼
+    ════════════════════════════ */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.07);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 11px 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      backdrop-filter: blur(10px);
+      margin-top: 20px;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.14);
+      border-color: rgba(255,255,255,0.3);
+      transform: translateX(-3px);
+    }
+
+    /* ════════════════════════════
+       반응형
+    ════════════════════════════ */
     @media (max-width: 768px) {
-      .player-wrap { padding: 0 12px; }
-      .video-info h1 { font-size: 1.4rem; }
+      .player-hero          { height: auto; padding-bottom: 40px; }
+      .player-hero-content  { flex-direction: column; padding: 40px 16px 0; gap: 20px; }
+      .player-thumb         { flex: none; width: 100%; max-width: 360px; }
+      .player-hero-title    { font-size: 1.8rem; }
+      .player-section       { padding: 20px 16px 0; }
+      .credits-section      { padding: 28px 16px; }
+      .related-section      { padding: 28px 16px 60px; }
+      .video-container      { border-radius: 10px; }
+      .credits-grid         { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -136,25 +398,69 @@
     </div>
   </nav>
 
-  <!-- ── 플레이어 ── -->
-  <div class="player-wrap">
+  <!-- ════════════════════════════
+       1. 히어로 헤더 (썸네일 + 정보)
+  ════════════════════════════ -->
+  <div class="player-hero">
+    <div class="player-hero-bg" id="heroBg"></div>
+    <div class="player-hero-gradient"></div>
+    <div class="player-hero-content">
+
+      <!-- 썸네일 -->
+      <div class="player-thumb">
+        <img id="heroThumb" src="" alt="">
+      </div>
+
+      <!-- 텍스트 정보 -->
+      <div class="player-hero-info">
+        <div class="player-badge">🎬 Shwany 오리지널</div>
+        <h1 class="player-hero-title" id="heroTitle">Loading...</h1>
+        <div class="player-hero-meta" id="heroMeta"></div>
+        <p class="player-hero-desc" id="heroDesc"></p>
+        <a class="back-btn" onclick="history.back()">← 다른 거 볼래요!</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       2. 플레이어
+  ════════════════════════════ -->
+  <div class="player-section">
     <div class="video-container">
       <video id="mainVideo" controls autoplay controlsList="nodownload">
         <source id="videoSrc" src="" type="video/mp4">
       </video>
     </div>
+    <!-- ── 플레이어 하단 정보 ── -->
+<div class="video-info">
+  <h1 id="videoTitle"></h1>
+  <div class="video-meta" id="videoMeta"></div>
+  <p class="video-desc" id="videoDesc"></p>
+</div>
 
-    <div class="video-info">
-      <h1 id="videoTitle">Loading...</h1>
-      <div class="video-meta" id="videoMeta"></div>
-      <p class="video-desc" id="videoDesc"></p>
-      <a class="back-btn" onclick="history.back()">← 다른 거 볼래요!</a>
-    </div>
   </div>
 
-  <!-- ── 관련 영상 ── -->
+  <!-- ════════════════════════════
+       3. 크레딧
+  ════════════════════════════ -->
+  <div class="credits-section">
+  <div class="credits-header">
+    <h3>🎭 크레딧 (Credits)</h3>
+  </div>
+  <div class="credits-grid" id="creditsGrid"></div>
+
+  <!-- 출처 -->
+  <div class="credits-source" id="creditsSource"></div>
+</div>
+
+  <!-- ════════════════════════════
+       4. 관련 영상
+  ════════════════════════════ -->
   <div class="related-section">
-    <h3>관련 영상</h3>
+    <div class="related-header">
+      <h3>🎬 관련 영상 (Related)</h3>
+    </div>
     <div class="related-grid" id="relatedGrid"></div>
   </div>
 
@@ -170,29 +476,81 @@
       showLoading(true)
 
       try {
-        const params  = new URLSearchParams(window.location.search)
-        const id      = parseInt(params.get('id'))
-        const videos  = await fetchCatalog()
-        const video   = videos.find(v => v.id === id)
+        const params = new URLSearchParams(window.location.search)
+        const id     = parseInt(params.get('id'))
+        const videos = await fetchCatalog()
+        const video  = videos.find(v => v.id === id)
 
         if (!video) throw new Error('영상 없음')
 
-        // 영상 세팅
-        document.title = `MyFlix - ${video.title}`
-        document.getElementById('videoSrc').src = video.videoUrl
-        document.getElementById('mainVideo').load()
+        // ── 히어로 헤더 세팅 ──
+        document.title = `Shwany - ${video.title}`
 
-        document.getElementById('videoTitle').textContent = video.title
-        document.getElementById('videoDesc').textContent  = video.description
-        document.getElementById('videoMeta').innerHTML    = `
-          <span class="match">✔ ${video.match || 97}% 일치</span>
+        document.getElementById('heroBg').style.backgroundImage    = `url('${video.thumbnail}')`
+        document.getElementById('heroThumb').src                   = video.thumbnail
+        document.getElementById('heroThumb').alt                   = video.title
+        document.getElementById('heroTitle').textContent           = video.title
+        document.getElementById('heroDesc').textContent            = video.description
+        document.getElementById('heroMeta').innerHTML              = `
+          <span class="match">✔ 오리지널 (Original)</span>
+          <span class="dot"></span>
           <span>${video.year}</span>
+          <span class="dot"></span>
           <span>${video.duration}</span>
           <span class="badge">${video.rating}</span>
           <span class="cat">${video.category}</span>
+          <span class="dot"></span>
+  <span class="evaluation">★ ${video.evaluation}</span>
         `
 
-        // 관련 영상 (같은 카테고리, 현재 영상 제외)
+        // ── 플레이어 세팅 ──
+        document.getElementById('videoSrc').src = video.videoUrl
+        document.getElementById('mainVideo').load()
+
+        // ── 플레이어 하단 정보 세팅 ──
+document.getElementById('videoTitle').textContent = video.title
+document.getElementById('videoDesc').textContent  = video.description
+document.getElementById('videoMeta').innerHTML    = `
+  <span class="match">✔ 오리지널 (Original)</span>
+  <span class="dot"></span>
+  <span>${video.year}</span>
+  <span class="dot"></span>
+  <span>${video.duration}</span>
+  <span class="badge">${video.rating}</span>
+  <span class="cat">${video.category}</span>
+  <span class="dot"></span>
+  <span class="evaluation">★ ${video.evaluation}</span>
+`
+
+        // ── 크레딧 세팅 ──
+const creditsGrid = document.getElementById('creditsGrid')
+
+if (video.credits && video.credits.length > 0) {
+  creditsGrid.innerHTML = video.credits.map(c => `
+    <div class="credit-item">
+      <span class="credit-role">${c.role}</span>
+      <span class="credit-name">${c.name}</span>
+    </div>
+  `).join('')
+} else {
+  creditsGrid.innerHTML = `
+    <p class="credits-empty">엥 왜 여기가 비지?</p>
+  `
+}
+
+// ── 출처 세팅 ──
+const sourceEl = document.getElementById('creditsSource')
+
+if (video.source && video.source.length > 0) {
+  sourceEl.innerHTML = `
+    <h4>📷 출처</h4>
+    ${video.source.map(s => `<p>${s.role} - ${s.name}</p>`).join('')}
+  `
+} else {
+  sourceEl.innerHTML = ''
+}
+
+        // ── 관련 영상 ──
         const related = videos
           .filter(v => v.category === video.category && v.id !== id)
           .slice(0, 6)
@@ -200,15 +558,16 @@
         document.getElementById('relatedGrid').innerHTML =
           related.length
             ? related.map(createCard).join('')
-            : '<p style="color:#555">어이쿠! 아직 데이터가 부족해요!</p>'
+            : '<p class="empty-related">엥 아직 관련 영상이 없나보네</p>'
 
       } catch(e) {
         console.error(e)
-        document.getElementById('videoTitle').textContent = '잘못 입력하신건가요?'
+        document.getElementById('heroTitle').textContent = '문제가 있다. 다시 입력하라.'
       }
 
       showLoading(false)
     })
+  
   </script>
 </body>
 </html>
