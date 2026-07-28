@@ -599,7 +599,7 @@ body {
 
 .credits-source p {
   font-size: 0.75rem;
-  color: #666;
+  color: #d6d6d6;
   margin: 3px 0;
   letter-spacing: 0.2px;
 }
@@ -621,7 +621,7 @@ body {
 
 .credits-music p {
   font-size: 0.78rem;
-  color: #666;
+  color: #e7e7e7;
   margin: 4px 0;
   letter-spacing: 0.2px;
 }
