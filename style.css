@@ -603,3 +603,25 @@ body {
   margin: 3px 0;
   letter-spacing: 0.2px;
 }
+
+.credits-music {
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.credits-music h4 {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.credits-music p {
+  font-size: 0.78rem;
+  color: #666;
+  margin: 4px 0;
+  letter-spacing: 0.2px;
+}
