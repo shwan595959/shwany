@@ -449,7 +449,7 @@
     <h3>🎭 크레딧 (Credits)</h3>
   </div>
   <div class="credits-grid" id="creditsGrid"></div>
-
+<div class="credits-music" id="creditsMusic"></div>
   <!-- 출처 -->
   <div class="credits-source" id="creditsSource"></div>
 </div>
@@ -568,6 +568,17 @@ if (video.source && video.source.length > 0) {
       showLoading(false)
     })
   
+// ── 음원 출처 세팅 ──
+const musicEl = document.getElementById('creditsMusic')
+
+if (video.music && video.music.length > 0) {
+  musicEl.innerHTML = `
+    <h4>🎵 음원 출처</h4>
+    ${video.music.map(m => `<p>${m.title} - ${m.artist}</p>`).join('')}
+  `
+} else {
+  musicEl.innerHTML = ''
+}
   </script>
 </body>
 </html>
