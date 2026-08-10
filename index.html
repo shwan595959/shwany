@@ -307,6 +307,317 @@
   }
 }
 
+/* ── 대표 예고편 섹션 ── */
+.trailer-section {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 배경 이미지 */
+.trailer-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.08);
+  animation: trailerZoom 12s ease forwards;
+  filter: brightness(0.6);
+}
+
+@keyframes trailerZoom {
+  from { transform: scale(1.08); }
+  to   { transform: scale(1.0); }
+}
+
+/* 그라디언트 오버레이 */
+.trailer-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(10,10,10,1) 0%, transparent 50%),
+    linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, transparent 30%),
+    linear-gradient(to right, rgba(10,10,10,0.7) 0%, transparent 60%);
+  z-index: 1;
+}
+
+/* 콘텐츠 */
+.trailer-content {
+  position: absolute;
+  bottom: 20%;
+  left: 56px;
+  z-index: 2;
+  max-width: 600px;
+  animation: trailerFadeUp 1.2s ease forwards;
+  opacity: 0;
+}
+
+@keyframes trailerFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* NEW 라벨 */
+.trailer-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #e50914;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.trailer-label-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e50914;
+  animation: pulse 1.5s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* 제목 */
+.trailer-title {
+  font-size: 4.5rem;
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -2px;
+  margin-bottom: 16px;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.8);
+  background: linear-gradient(135deg, #ffffff 60%, #aaaaaa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 서브 텍스트 */
+.trailer-sub {
+  font-size: 1rem;
+  color: #bbb;
+  line-height: 1.7;
+  margin-bottom: 32px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 버튼 */
+.trailer-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.btn-trailer-play {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 36px;
+  background: #e50914;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 30px rgba(229,9,20,0.5);
+  letter-spacing: 0.3px;
+}
+
+.btn-trailer-play:hover {
+  background: #ff1a26;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 40px rgba(229,9,20,0.6);
+}
+
+.play-icon {
+  width: 32px;
+  height: 32px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+.btn-trailer-more {
+  padding: 16px 32px;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.btn-trailer-more:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-3px);
+  border-color: rgba(255,255,255,0.5);
+}
+
+/* ── 비디오 플레이어 오버레이 ── */
+.trailer-video-wrap {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  backdrop-filter: blur(8px);
+}
+
+.trailer-video-wrap.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.trailer-video-inner {
+  position: relative;
+  width: 90vw;
+  max-width: 1100px;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+  transform: scale(0.9);
+  transition: transform 0.4s ease;
+}
+
+.trailer-video-wrap.open .trailer-video-inner {
+  transform: scale(1);
+}
+
+.trailer-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.trailer-close:hover {
+  background: #e50914;
+  border-color: #e50914;
+  transform: scale(1.1);
+}
+
+/* ── 스크롤 유도 ── */
+.trailer-scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  animation: scrollHint 2s ease infinite;
+}
+
+@keyframes scrollHint {
+  0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+  50%       { opacity: 0.8; transform: translateX(-50%) translateY(6px); }
+}
+
+.scroll-arrow {
+  font-size: 1.2rem;
+}
+
+/* ── 모바일 반응형 ── */
+@media (max-width: 768px) {
+  .trailer-content {
+    left: 20px;
+    right: 20px;
+    bottom: 18%;
+    max-width: 100%;
+  }
+
+  .trailer-title {
+    font-size: 2.6rem;
+    letter-spacing: -1px;
+  }
+
+  .trailer-sub {
+    font-size: 0.88rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .btn-trailer-play {
+    padding: 13px 24px;
+    font-size: 0.9rem;
+  }
+
+  .btn-trailer-more {
+    padding: 13px 20px;
+    font-size: 0.9rem;
+  }
+
+  .trailer-video-inner {
+    width: 96vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .trailer-title {
+    font-size: 2rem;
+  }
+
+  .trailer-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .btn-trailer-play,
+  .btn-trailer-more {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+    
   </style>
 </head>
 <body>
@@ -327,6 +638,57 @@
     </div>
   </nav>
 
+<!-- ── 대표 예고편 ── -->
+<section class="trailer-section" id="trailerSection">
+  <div class="trailer-bg" id="trailerBg"></div>
+  <div class="trailer-overlay"></div>
+
+  <div class="trailer-content">
+    <div class="trailer-label">
+      <span class="trailer-label-dot"></span>
+      NEW
+    </div>
+    <h1 class="trailer-title" id="trailerTitle">Loading...</h1>
+    <p class="trailer-sub" id="trailerSub"></p>
+
+    <div class="trailer-actions">
+      <button class="btn-trailer-play" id="btnTrailerPlay">
+        <span class="play-icon">▶</span>
+        <span>예고편 보기</span>
+      </button>
+      <button class="btn-trailer-more" id="btnTrailerMore">
+        ℹ️ 자세히 보기
+      </button>
+    </div>
+  </div>
+
+  <!-- 비디오 플레이어 (클릭 시 등장) -->
+  <div class="trailer-video-wrap" id="trailerVideoWrap">
+    <div class="trailer-video-inner">
+      <button class="trailer-close" id="trailerClose">✕</button>
+      <video
+        id="trailerVideo"
+        controls
+        autoplay
+        playsinline
+        style="width:100%;height:100%;object-fit:contain;border-radius:12px;">
+      </video>
+    </div>
+  </div>
+
+  <!-- 스크롤 유도 -->
+  <div class="trailer-scroll-hint">
+    <span>스크롤하여 더 보기</span>
+    <div class="scroll-arrow">↓</div>
+  </div>
+</section>
+
+<!-- ── 히어로 배너 ── -->
+<section class="hero" id="hero">
+  ...
+</section>
+
+  
   <!-- ── 히어로 배너 ── -->
   <section class="hero" id="hero">
     <div id="heroSlides"></div>
@@ -566,6 +928,57 @@ async function loadAll() {
       }
     }
 
+// ── 대표 예고편 ──
+function initTrailer() {
+  // featured 대신 trailer.videoId로 찾기
+  const featured = catalog.videos.find(v => v.id === catalog.trailer.videoId);
+  if (!featured) return;
+
+  // 나머지는 동일
+  document.getElementById('trailerBg').style.backgroundImage =
+    `url('${featured.thumbnail}')`;
+
+  document.getElementById('trailerTitle').textContent = featured.title;
+  document.getElementById('trailerSub').textContent = featured.description;
+
+  document.getElementById('btnTrailerPlay').onclick = () => {
+    const wrap = document.getElementById('trailerVideoWrap');
+    const video = document.getElementById('trailerVideo');
+    video.src = featured.videoUrl;
+    wrap.classList.add('open');
+    video.play();
+  };
+
+  document.getElementById('btnTrailerMore').onclick = () => {
+    location.href = `player.html?id=${featured.id}`;
+  };
+
+  document.getElementById('trailerClose').onclick = closeTrailer;
+
+  document.getElementById('trailerVideoWrap').onclick = (e) => {
+    if (e.target === document.getElementById('trailerVideoWrap')) {
+      closeTrailer();
+    }
+  };
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeTrailer();
+  });
+}
+
+
+function closeTrailer() {
+  const wrap = document.getElementById('trailerVideoWrap');
+  const video = document.getElementById('trailerVideo');
+  wrap.classList.remove('open');
+  video.pause();
+  video.src = '';
+}
+
+// loadData() 안에 initTrailer() 추가
+// 기존 loadData 함수에서 데이터 로드 후 호출
+
+    
     function showError() {
       document.body.innerHTML = `
         <div style="display:flex;flex-direction:column;justify-content:center;
