@@ -930,24 +930,35 @@ async function loadAll() {
 
 // ── 대표 예고편 ──
 function initTrailer() {
-  // featured 대신 trailer.videoId로 찾기
   const featured = catalog.videos.find(v => v.id === catalog.trailer.videoId);
   if (!featured) return;
 
-  // 나머지는 동일
   document.getElementById('trailerBg').style.backgroundImage =
     `url('${featured.thumbnail}')`;
 
   document.getElementById('trailerTitle').textContent = featured.title;
   document.getElementById('trailerSub').textContent = featured.description;
 
-  document.getElementById('btnTrailerPlay').onclick = () => {
-    const wrap = document.getElementById('trailerVideoWrap');
-    const video = document.getElementById('trailerVideo');
-    video.src = featured.videoUrl;
-    wrap.classList.add('open');
-    video.play();
-  };
+  // ── 예고편 버튼 분기 ──
+  const btnPlay = document.getElementById('btnTrailerPlay');
+
+  if (!featured.videoUrl) {
+    // 예고편 없을 때
+    btnPlay.disabled = true;
+    btnPlay.style.opacity = '0.4';
+    btnPlay.style.cursor = 'not-allowed';
+    btnPlay.style.boxShadow = 'none';
+    btnPlay.innerHTML = `<span class="play-icon">🔒</span><span>예고편 준비 중</span>`;
+  } else {
+    // 예고편 있을 때
+    btnPlay.onclick = () => {
+      const wrap = document.getElementById('trailerVideoWrap');
+      const video = document.getElementById('trailerVideo');
+      video.src = featured.videoUrl;
+      wrap.classList.add('open');
+      video.play();
+    };
+  }
 
   document.getElementById('btnTrailerMore').onclick = () => {
     location.href = `player.html?id=${featured.id}`;
