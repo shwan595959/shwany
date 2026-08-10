@@ -621,6 +621,244 @@
 
       .player-controls { flex: 2; }
     }
+
+    /* ── Now Playing 뷰 ── */
+.now-playing-view {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #1a0a2e 0%, #0d0d1a 60%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 32px;
+  z-index: 10;
+  animation: npFadeIn 0.4s ease;
+}
+
+@keyframes npFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.np-back-btn {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: #aaa;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.np-back-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: white;
+}
+
+.np-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  max-width: 420px;
+}
+
+/* 앨범 커버 */
+.np-cover {
+  width: 600px;   /* 280px → 320px */
+  height: 350px;  /* 280px → 320px */
+  border-radius: 20px;
+  background: linear-gradient(135deg, #2a1a4e, #1a2a4e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 6rem;  /* 5rem → 6rem */
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6),
+              0 0 60px rgba(100,60,200,0.3);
+  overflow: hidden;
+  animation: coverFloat 4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.np-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+@keyframes coverFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* 곡 정보 */
+.np-info {
+  text-align: center;
+}
+
+.np-title {
+  font-size: 2.2rem;  /* 1.6rem → 2.2rem */
+  font-weight: 800;
+  width: 300;
+  color: white;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.np-artist {
+  font-size: 1.3rem;  /* 1rem → 1.3rem */
+  color: #aaa;
+  margin-bottom: 4px;
+}
+
+.np-album {
+  font-size: 1rem;  /* 0.8rem → 1rem */
+  color: #666;
+  margin-bottom: 15px;
+}
+
+/* 진행바 */
+.np-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.np-time {
+  font-size: 0.9rem;  /* 0.75rem → 0.9rem */
+  color: #666;
+  min-width: 40px;
+}
+
+.np-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+}
+
+.np-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7b4fff, #e50914);
+  border-radius: 4px;
+  transition: width 0.1s linear;
+}
+
+.np-progress-bar:hover .np-progress-fill {
+  background: linear-gradient(90deg, #9b6fff, #ff3a44);
+}
+
+/* 컨트롤 */
+.np-controls {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.np-ctrl-btn {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 1.8rem;  /* 1.3rem → 1.8rem */
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.np-ctrl-main {
+  width: 80px;   /* 64px → 80px */
+  height: 80px;  /* 64px → 80px */
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7b4fff, #e50914);
+  border: none;
+  color: white;
+  font-size: 2rem;  /* 1.5rem → 2rem */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 30px rgba(123,79,255,0.5);
+  transition: all 0.2s;
+}
+
+.np-ctrl-btn:hover {
+  color: white;
+  background: rgba(255,255,255,0.08);
+}
+
+.np-ctrl-btn.active {
+  color: #7b4fff;
+}
+
+
+.np-ctrl-main:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 40px rgba(123,79,255,0.7);
+}
+
+/* 볼륨 */
+.np-volume {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.np-volume-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.np-volume-fill {
+  height: 100%;
+  background: rgba(255,255,255,0.4);
+  border-radius: 4px;
+}
+
+.np-video-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.np-video-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(229,9,20,0.15);
+  border: 1px solid rgba(229,9,20,0.4);
+  color: #e50914;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 24px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.np-video-btn:hover {
+  background: rgba(229,9,20,0.3);
+  border-color: #e50914;
+  transform: scale(1.04);
+  color: #ff3a44;
+}
+
+/* music-main 상대 위치 */
+.music-main {
+  position: relative;
+}
   </style>
 </head>
 <body>
@@ -664,6 +902,55 @@
 
     <!-- 메인 콘텐츠 -->
     <main class="music-main" id="musicMain">
+
+
+        <!-- Now Playing 뷰 -->
+<div class="now-playing-view" id="nowPlayingView" style="display:none;">
+  <button class="np-back-btn" onclick="closeNowPlaying()">← 목록으로</button>
+  
+  <div class="np-content">
+    <!-- 앨범 커버 -->
+    <div class="np-cover" id="npCover">🎵</div>
+    
+    <!-- 곡 정보 -->
+    <div class="np-info">
+      <div class="np-title" id="npTitle">-</div>
+      <div class="np-artist" id="npArtist">-</div>
+      <div class="np-album" id="npAlbum">-</div>
+      <div class="np-video-wrap" id="npVideoWrap" style="display:none;">
+  <a class="np-video-btn" id="npVideoBtn" href="#">
+    🎬 <span id="npVideoTitle">관련 영상 보기</span>
+  </a>
+</div>
+    </div>
+
+    <!-- 진행바 -->
+    <div class="np-progress-wrap">
+      <span class="np-time" id="npCurrentTime">0:00</span>
+      <div class="np-progress-bar" id="npProgressBar" onclick="seekTo(event)">
+        <div class="np-progress-fill" id="npProgressFill" style="width:0%"></div>
+      </div>
+      <span class="np-time" id="npTotalTime">0:00</span>
+    </div>
+
+    <!-- 컨트롤 -->
+    <div class="np-controls">
+      <button class="np-ctrl-btn" id="npBtnRepeat" onclick="document.getElementById('btnRepeat').click()">🔁</button>
+      <button class="np-ctrl-btn" onclick="prevTrack()">⏮</button>
+      <button class="np-ctrl-main" id="npBtnPlayPause" onclick="togglePlay()">▶</button>
+      <button class="np-ctrl-btn" onclick="nextTrack()">⏭</button>
+      <button class="np-ctrl-btn" id="npBtnShuffle" onclick="toggleShuffle()">🔀</button>
+    </div>
+
+    <!-- 볼륨 -->
+    <div class="np-volume">
+      <button class="volume-icon" onclick="toggleMute()">🔊</button>
+      <div class="np-volume-bar" onclick="setVolume(event)">
+        <div class="np-volume-fill" id="npVolumeFill"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
       <!-- 플레이리스트 헤더 -->
       <div class="pl-header">
@@ -736,7 +1023,7 @@
 
   <!-- ── 오디오 엘리먼트 ── -->
   <audio id="audioPlayer"></audio>
-
+  <script src="config.js"></script>
   <script>
     // ── 데이터 ──
     let catalog = null;
@@ -753,7 +1040,7 @@
 
     // ── 데이터 로드 ──
     async function loadData() {
-      const res = await fetch('catalog.json');
+      const res = await fetch(CONFIG.CATALOG_URL);
       catalog = await res.json();
       initMusic();
     }
@@ -779,6 +1066,16 @@
         </div>
       `).join('');
     }
+
+
+    function openNowPlaying() {
+  document.getElementById('nowPlayingView').style.display = 'flex';
+}
+
+function closeNowPlaying() {
+  document.getElementById('nowPlayingView').style.display = 'none';
+}
+
 
     // ── 전체 트랙 보기 ──
     function showAll() {
@@ -871,29 +1168,68 @@
       document.getElementById('btnPlPlay').onclick = () => playTrack(0);
     }
 
-    // ── 트랙 재생 ──
-    function playTrack(index) {
-      if (index < 0 || index >= currentPlaylist.length) return;
-      currentTrackIndex = index;
-      const track = currentPlaylist[index];
-      if (!track) return;
+    // ── playTrack 수정 ──
+function playTrack(index) {
+  if (index < 0 || index >= currentPlaylist.length) return;
+  currentTrackIndex = index;
+  const track = currentPlaylist[index];
+  if (!track) return;
 
-      // 오디오 URL 없으면 스킵
-      if (!track.audioUrl) {
-        updatePlayerUI(track);
-        return;
-      }
+  if (!track.audioUrl) {
+    updatePlayerUI(track);
+    updateNowPlayingView(track);  // ← 추가
+    openNowPlaying();             // ← 추가
+    return;
+  }
 
-      audio.src = track.audioUrl;
-      audio.play().then(() => {
-        isPlaying = true;
-        updatePlayerUI(track);
-        updatePlayPauseBtn();
-        updateTrackHighlight();
-      }).catch(err => {
-        console.error('재생 오류:', err);
-      });
+  audio.src = track.audioUrl;
+  audio.play().then(() => {
+    isPlaying = true;
+    updatePlayerUI(track);
+    updateNowPlayingView(track);  // ← 추가
+    openNowPlaying();             // ← 추가
+    updatePlayPauseBtn();
+    updateTrackHighlight();
+  }).catch(err => {
+    console.error('재생 오류:', err);
+  });
+}
+
+// ── Now Playing 뷰 업데이트 ──
+function updateNowPlayingView(track) {
+  document.getElementById('npTitle').textContent  = track.title;
+  document.getElementById('npArtist').textContent = track.artist;
+  document.getElementById('npAlbum').textContent  = track.album || '';
+
+  const coverEl = document.getElementById('npCover');
+  if (track.cover) {
+    coverEl.innerHTML = `<img src="${track.cover}" alt="" 
+      onerror="this.parentElement.innerHTML='🎵'">`;
+  } else {
+    coverEl.innerHTML = '🎵';
+  }
+
+  // ── 연관 동영상 ── ← 추가
+  const videoWrap = document.getElementById('npVideoWrap');
+  const videoBtn  = document.getElementById('npVideoBtn');
+  const videoTitleEl = document.getElementById('npVideoTitle');
+
+  if (track.relatedVideo) {
+    const video = catalog.videos.find(v => v.id === track.relatedVideo);
+    if (video) {
+      videoTitleEl.textContent = video.title;
+      videoBtn.href = `player.html?id=${video.id}`;
+      videoWrap.style.display = 'flex';
+    } else {
+      videoWrap.style.display = 'none';
     }
+  } else {
+    videoWrap.style.display = 'none';  // 연관 영상 없으면 숨김
+  }
+
+  // 볼륨 바 동기화
+  document.getElementById('npVolumeFill').style.width = (volume * 100) + '%';
+}
 
     // ── 재생/일시정지 ──
     function togglePlay() {
@@ -948,13 +1284,15 @@
 
     // ── 볼륨 ──
     function setVolume(e) {
-      const bar = document.getElementById('volumeBar');
-      const rect = bar.getBoundingClientRect();
-      volume = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      audio.volume = volume;
-      isMuted = false;
-      document.getElementById('volumeFill').style.width = (volume * 100) + '%';
-    }
+  const bar  = e.currentTarget;
+  const rect = bar.getBoundingClientRect();
+  volume = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  audio.volume = volume;
+  isMuted = false;
+  const pct = (volume * 100) + '%';
+  document.getElementById('volumeFill').style.width   = pct;
+  document.getElementById('npVolumeFill').style.width = pct;
+}
 
     function toggleMute() {
       isMuted = !isMuted;
@@ -964,23 +1302,28 @@
 
     // ── 프로그레스 ──
     function seekTo(e) {
-      const bar = document.getElementById('progressBar');
-      const rect = bar.getBoundingClientRect();
-      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      if (audio.duration) audio.currentTime = ratio * audio.duration;
-    }
+  const bar  = e.currentTarget;
+  const rect = bar.getBoundingClientRect();
+  const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  if (audio.duration) audio.currentTime = ratio * audio.duration;
+}
 
     audio.addEventListener('timeupdate', () => {
-      if (!audio.duration) return;
-      const ratio = audio.currentTime / audio.duration;
-      document.getElementById('progressFill').style.width = (ratio * 100) + '%';
-      document.getElementById('currentTime').textContent = formatTime(audio.currentTime);
-    });
+  if (!audio.duration) return;
+  const ratio = audio.currentTime / audio.duration;
+  const pct   = (ratio * 100) + '%';
+
+  document.getElementById('progressFill').style.width = pct;
+  document.getElementById('npProgressFill').style.width = pct;
+  document.getElementById('currentTime').textContent  = formatTime(audio.currentTime);
+  document.getElementById('npCurrentTime').textContent = formatTime(audio.currentTime);
+});
 
     audio.addEventListener('loadedmetadata', () => {
-      document.getElementById('totalTime').textContent = formatTime(audio.duration);
-    });
-
+  const t = formatTime(audio.duration);
+  document.getElementById('totalTime').textContent  = t;
+  document.getElementById('npTotalTime').textContent = t;
+});
     audio.addEventListener('ended', () => {
       if (!isRepeat) nextTrack();
     });
@@ -998,8 +1341,10 @@
     }
 
     function updatePlayPauseBtn() {
-      document.getElementById('btnPlayPause').textContent = isPlaying ? '⏸' : '▶';
-    }
+  const icon = isPlaying ? '⏸' : '▶';
+  document.getElementById('btnPlayPause').textContent  = icon;
+  document.getElementById('npBtnPlayPause').textContent = icon;
+}
 
     function updateTrackHighlight() {
       document.querySelectorAll('.track-item').forEach(el => el.classList.remove('playing'));
