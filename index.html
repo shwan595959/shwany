@@ -8,11 +8,14 @@
   <style>
 
   /* ── 히어로 배너 ── */
+
+    
   .hero {
-    position: relative;
-    height: 100vh;
-    overflow: hidden;
-  }
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  margin-top: 0; /* 혹시 margin-top 있으면 제거 */
+}
 
   .hero-slide {
     position: absolute;
@@ -67,6 +70,7 @@
     font-weight: 900;
     line-height: 1.05;
     margin-bottom: 18px;
+    width: 500px;
     text-shadow: 0 4px 20px rgba(0,0,0,0.6);
     letter-spacing: -1px;
   }
@@ -123,6 +127,8 @@
     gap: 8px;
     letter-spacing: 0.3px;
   }
+
+  
 
   .btn-play {
     background: white;
@@ -196,11 +202,13 @@
     transition: all 0.35s ease;
   }
 
+
+  
   .preview-thumb:hover {
     opacity: 0.8;
     transform: translateY(-3px);
   }
-
+  .content
   .preview-thumb.active {
     border-color: white;
     opacity: 1;
@@ -223,6 +231,8 @@
     padding-bottom: 80px;
   }
 
+  .video
+
   /* ── 모바일 반응형 ── */
 @media (max-width: 768px) {
 
@@ -231,6 +241,8 @@
     height: 43vh;
   }
 
+  
+  
   .hero-gradient {
     background:
       linear-gradient(to top, rgba(10,10,10,1) 0%, transparent 60%),
@@ -315,7 +327,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: -1500px; /* 값을 더 키워보세요 */
 }
+
 
 /* 배경 이미지 */
 .trailer-bg {
@@ -621,7 +635,22 @@
   </style>
 </head>
 <body>
-
+<div id="detailModal" class="detail-modal" onclick="closeDetail(event)">
+  <div class="detail-card">
+    <button class="detail-close" onclick="closeDetailBtn()">✕</button>
+    <img id="detailThumb" src="" alt="">
+    <div class="detail-info">
+      <h2 id="detailTitle"></h2>
+      <div class="detail-meta">
+        <span id="detailYear"></span>
+        <span id="detailDuration"></span>
+        <span id="detailRating"></span>
+        <span id="detailEval">★ <span id="detailEvalVal"></span></span>
+      </div>
+      <p id="detailDesc"></p>
+    </div>
+  </div>
+</div>
   <!-- ── 네비게이션 ── -->
   <nav class="navbar" id="navbar">
     <div class="nav-left">
@@ -630,7 +659,7 @@
         <li><a href="index.html" class="active">메인</a></li>
         <li><a href="list.html">정렬 알고리즘</a></li>
         <li><a href="search.html">탐색 알고리즘</a></li>
-        <li><a href="music.html" class="active">청각 알고리즘</a></li>
+        <li><a href="music.html">청각 알고리즘</a></li>
       </ul>
     </div>
     <div class="nav-right">
@@ -654,10 +683,10 @@
     <div class="trailer-actions">
       <button class="btn-trailer-play" id="btnTrailerPlay">
         <span class="play-icon">▶</span>
-        <span>예고편 보기</span>
+        <span>바로 달려가기</span>
       </button>
       <button class="btn-trailer-more" id="btnTrailerMore">
-        ℹ️ 자세히 보기
+        자세히 보기
       </button>
     </div>
   </div>
@@ -701,7 +730,7 @@
       <div class="hero-meta"  id="heroMeta"></div>
       <div class="hero-buttons">
         <button class="btn-play" id="heroPlay">▶ 재생</button>
-        <button class="btn-more" id="heroMore">ℹ️ 자세히 보기</button>
+        <button class="btn-more" id="heroMore">자세히 보기</button>
       </div>
     </div>
 
@@ -769,6 +798,7 @@ window.addEventListener('load', () => {
     let currentSlide = 0
     let slideTimer   = null
     let featuredList = []
+    let trailer = null
     
     // Refresh
     document.addEventListener('DOMContentLoaded', async () => {
@@ -778,16 +808,19 @@ window.addEventListener('load', () => {
       try {
         const data = await loadAll()
 videos       = data.videos
+trailer      = data.trailer  // ← 추가!
 renderUpcoming(data.upcoming)
-        featuredList = videos.filter(v => v.featured)
-        if (featuredList.length === 0) featuredList = videos.slice(0, 5)
+featuredList = videos.filter(v => v.featured)
+if (featuredList.length === 0) featuredList = videos.slice(0, 5)
 
-        buildSlides()
-        buildPreview()
-        buildIndicators()
-        showSlide(0)
-        startAutoSlide()
-        renderRows()
+buildSlides()
+buildPreview()
+buildIndicators()
+showSlide(0)
+startAutoSlide()
+renderRows()
+initTrailer()  // ← 추가! (videos랑 trailer 할당 후에 호출)
+
 
       } catch(e) {
         console.error(e)
@@ -829,6 +862,14 @@ function renderUpcoming(upcomingList) {
   }).join('')
 }
 
+
+
+// ESC 키로 닫기
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeDetailBtn()
+})
+
+
 async function loadAll() {
   // ✅ 캐시 무력화
   const res  = await fetch(CONFIG.CATALOG_URL + '?t=' + Date.now())
@@ -837,7 +878,9 @@ async function loadAll() {
   
   return {
     videos   : data.videos,
-    upcoming : data.upcoming || []
+    upcoming : data.upcoming || [],
+    trailer : data.trailer,
+    music : data.music
   }
 }
 
@@ -888,7 +931,7 @@ async function loadAll() {
         <span class="evaluation">★ ${v.evaluation}</span>
       `
       document.getElementById('heroPlay').onclick = () => goPlayer(v.id)
-      document.getElementById('heroMore').onclick = () => goPlayer(v.id)
+      document.getElementById('heroMore').onclick = () => openDetail(v.id)
 
       currentSlide = idx
     }
@@ -901,36 +944,39 @@ async function loadAll() {
     }
 
     function renderRows() {
-      const featured = videos.filter(v => v.featured)
-      const action   = videos.filter(v => v.category === '액션')
-      const drama    = videos.filter(v => v.category === '드라마')
-      const comedy   = videos.filter(v => v.category === '코미디')
+  // videoUrl 없는 영상 제외
+  const filteredVideos = videos.filter(v => v.videoUrl && v.videoUrl.trim() !== '')
 
-      document.getElementById('featuredList').innerHTML = featured.map(createCard).join('')
-      document.getElementById('allList').innerHTML      = videos.map(createCard).join('')
+  const featured = filteredVideos.filter(v => v.featured)
+  const action   = filteredVideos.filter(v => v.category === '액션')
+  const drama    = filteredVideos.filter(v => v.category === '드라마')
+  const comedy   = filteredVideos.filter(v => v.category === '코미디')
 
-      if (action.length) {
-        document.getElementById('actionList').innerHTML = action.map(createCard).join('')
-      } else {
-        document.getElementById('actionRow').style.display = 'none'
-      }
+  document.getElementById('featuredList').innerHTML = featured.map(createCard).join('')
+  document.getElementById('allList').innerHTML      = filteredVideos.map(createCard).join('')
 
-      if (drama.length) {
-        document.getElementById('dramaList').innerHTML = drama.map(createCard).join('')
-      } else {
-        document.getElementById('dramaRow').style.display = 'none'
-      }
+  if (action.length) {
+    document.getElementById('actionList').innerHTML = action.map(createCard).join('')
+  } else {
+    document.getElementById('actionRow').style.display = 'none'
+  }
 
-      if (comedy.length) {
-        document.getElementById('comedyList').innerHTML = comedy.map(createCard).join('')
-      } else {
-        document.getElementById('comedyRow').style.display = 'none'
-      }
-    }
+  if (drama.length) {
+    document.getElementById('dramaList').innerHTML = drama.map(createCard).join('')
+  } else {
+    document.getElementById('dramaRow').style.display = 'none'
+  }
+
+  if (comedy.length) {
+    document.getElementById('comedyList').innerHTML = comedy.map(createCard).join('')
+  } else {
+    document.getElementById('comedyRow').style.display = 'none'
+  }
+}
 
 // ── 대표 예고편 ──
 function initTrailer() {
-  const featured = catalog.videos.find(v => v.id === catalog.trailer.videoId);
+  const featured = videos.find(v => v.id === trailer.videoId);
   if (!featured) return;
 
   document.getElementById('trailerBg').style.backgroundImage =
@@ -942,13 +988,13 @@ function initTrailer() {
   // ── 예고편 버튼 분기 ──
   const btnPlay = document.getElementById('btnTrailerPlay');
 
-  if (!featured.videoUrl) {
+  if (!featured.videoUrl || featured.videoUrl.trim() === '') {
     // 예고편 없을 때
     btnPlay.disabled = true;
     btnPlay.style.opacity = '0.4';
     btnPlay.style.cursor = 'not-allowed';
     btnPlay.style.boxShadow = 'none';
-    btnPlay.innerHTML = `<span class="play-icon">🔒</span><span>예고편 준비 중</span>`;
+    btnPlay.innerHTML = `<span class="play-icon">🔒</span><span>준비 중</span>`;
   } else {
     // 예고편 있을 때
     btnPlay.onclick = () => {
@@ -961,8 +1007,8 @@ function initTrailer() {
   }
 
   document.getElementById('btnTrailerMore').onclick = () => {
-    location.href = `player.html?id=${featured.id}`;
-  };
+  openDetail(featured.id)
+}
 
   document.getElementById('trailerClose').onclick = closeTrailer;
 
