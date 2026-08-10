@@ -20,7 +20,7 @@ function createCard(video) {
         <div class="card-play">▶</div>
         <div class="card-title">${video.title}</div>
         <div class="card-meta">
-          <span class="match">✔ ${video.match || 97}%</span>
+          <span class="match">✔ 오리지널(Original)</span>
           <span class="badge">${video.rating}</span>
           <span>${video.year}</span>
         </div>
@@ -28,6 +28,32 @@ function createCard(video) {
       </div>
     </div>
   `
+}
+
+function openDetail(id) {
+  const v = videos.find(v => v.id === id)
+  if (!v) return
+
+  document.getElementById('detailThumb').src          = v.thumbnail
+  document.getElementById('detailTitle').textContent  = v.title
+  document.getElementById('detailDesc').textContent   = v.description
+  document.getElementById('detailYear').textContent   = v.year
+  document.getElementById('detailDuration').textContent = v.duration
+  document.getElementById('detailRating').textContent = v.rating
+  document.getElementById('detailEvalVal').textContent = v.evaluation
+
+  document.getElementById('detailModal').classList.add('open')
+}
+
+function closeDetailBtn() {
+  document.getElementById('detailModal').classList.remove('open')
+}
+
+function closeDetail(e) {
+  // 배경 클릭시 닫기
+  if (e.target === document.getElementById('detailModal')) {
+    closeDetailBtn()
+  }
 }
 
 // ── 플레이어 페이지로 이동 ─────────────────────────────
